@@ -3,7 +3,10 @@ import ContactItem from 'components/ContactItem/ContactItem';
 import css from './ContactList.module.css';
 import Loader from 'components/Loader/Loader';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchContacts, deleteContact } from 'redux/operations';
+import {
+  fetchContacts,
+  deleteContact,
+} from 'redux/contacts/contactsOperations';
 
 const ContactList = () => {
   const contacts = useSelector(state => state.contacts.items);
@@ -25,26 +28,28 @@ const ContactList = () => {
   const onDeleteContact = id => dispatch(deleteContact(id));
 
   return (
-    <div className={css.contacts}>
-      {isLoading && (
-        <div className={css.loading}>
-          Loading...
-          <Loader />
-        </div>
-      )}
-      <ul className={css.contactsList}>
-        {visibleContacts.map(({ id, name, phone }) => (
-          <li key={id} className={css.item}>
-            <ContactItem
-              id={id}
-              name={name}
-              phone={phone}
-              onDeleteContact={onDeleteContact}
-            />
-          </li>
-        ))}
-      </ul>
-    </div>
+    visibleContacts.length > 0 && (
+      <div className={css.contacts}>
+        {isLoading && (
+          <div className={css.loading}>
+            Loading...
+            <Loader />
+          </div>
+        )}
+        <ul className={css.contactsList}>
+          {visibleContacts.map(({ id, name, number }) => (
+            <li key={id} className={css.item}>
+              <ContactItem
+                id={id}
+                name={name}
+                number={number}
+                onDeleteContact={onDeleteContact}
+              />
+            </li>
+          ))}
+        </ul>
+      </div>
+    )
   );
 };
 
